@@ -1,0 +1,15 @@
+{
+  "title": "Map & More",
+  "name": "mapnmore",
+  "version": "0.0.1",
+  "description": "Select any address text on a webpage and find it's location using Google or Bing Maps. You can also set the address as start or destination address",
+  "main": "mapnmore",
+  "author": "AByteCurious",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT",
+  "icon": "resource://mapnmore/data/mapnmore-32.png",
+  "permissions": {"private-browsing": true}
+}

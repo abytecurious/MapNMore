@@ -8,7 +8,7 @@
 //                    |_|                              *
 // - - - - - - - - - - - - - - - - - - - - - - - - - - *
 // Author     Ramesh Vishveshwar (abytecurious)        *
-// Version    1.0.0                                    *
+// Version    0.0.2                                    *
 // - - - - - - - - - - - - - - - - - - - - - - - - - - *
 // MapNMore is a firefox addon that integrates into    *
 // your Firefox session and allows you to select text  *
@@ -99,7 +99,8 @@ var LocateMenu = cmenu.Menu({
 // Main Function for Opening Tabs ----------------------
 function OpenTabs(provider, activity, address) {
 	var OpenURL = '';
-	address = address.replace(/(?:\r\n|\r|\n|\s)/gm, '+');
+	// Fixed multiple spaces to be replaced by single '+' (Thanks to AMO reviewer Ganzert)
+	address = address.replace(/(\s\s+)/gm,'+').replace(/(?:\r\n|\r|\n|\s)/gm,'+');
 	switch (provider) {
 		case "GM":
 			OpenURL = "https://www.google.com/maps?" + activity + address;

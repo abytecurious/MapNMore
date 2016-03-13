@@ -1,7 +1,7 @@
 {
   "title": "Map & More",
   "name": "mapnmore",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Select any address text on a webpage and find it's location using Google or Bing Maps. You can also set the address as start or destination address",
   "main": "mapnmore",
   "author": "AByteCurious",
@@ -11,5 +11,22 @@
   },
   "license": "MIT",
   "icon": "resource://mapnmore/data/mapnmore-32.png",
-  "permissions": {"private-browsing": true}
+  "permissions": {"private-browsing": true},
+  "preferences": [{
+        "name": "mnmDefMaps",
+        "title": "Default Map provider",
+        "description": "Choose the default map provider to locate the text you select",
+        "type": "menulist",
+        "value": 0,
+		"options": [
+			{
+				"value": "GM",
+				"label": "Google Maps"
+			},
+			{
+				"value": "BM",
+				"label": "Bing Maps"
+			}
+		]
+    }]
 }

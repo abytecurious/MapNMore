@@ -8,13 +8,21 @@
 //                    |_|                              *
 // - - - - - - - - - - - - - - - - - - - - - - - - - - *
 // Author     Ramesh Vishveshwar (abytecurious)        *
-// Version    0.0.2                                    *
+// Version    0.0.3                                    *
 // - - - - - - - - - - - - - - - - - - - - - - - - - - *
 // MapNMore is a firefox addon that integrates into    *
 // your Firefox session and allows you to select text  *
 // and locate it on Google or Bing Maps                *
 // You can also use this text as a start/end point on  *
 // either provider to get directions.                  *
+// - - - - - - - - - - - - - - - - - - - - - - - - - - *
+// Version | Description                               *
+// - - - - - - - - - - - - - - - - - - - - - - - - - - *
+// 0.0.1   | Initial Build                             *
+// 0.0.2   | Updated based on AMO feedback             *
+// 0.0.3   | Included Preferences                      *
+//         |                                           *
+//         |                                           *
 // - - - - - - - - - - - - - - - - - - - - - - - - - - *
 // Latest source code can be downloaded/forked from    *
 // GitHub. https://github.com/abytecurious/MapNMore    *
@@ -28,9 +36,9 @@
 // Required SDK modules --------------------------------
 var self = require('sdk/self');
 var cmenu = require("sdk/context-menu");
-var mmenu = require("sdk/context-menu");
 var tabs = require("sdk/tabs");
 var selection = require("sdk/selection");
+var preferences = require("sdk/simple-prefs").prefs;
 
 // Menu Items (grouped by provider) --------------------
 // Google Maps -----------------------------------------
@@ -41,14 +49,14 @@ var itmGMaps = cmenu.Item({
 		OpenTabs("GM", "q=", selection.text);
 	}
 });
-var itmGMapsSt = mmenu.Item({
+var itmGMapsSt = cmenu.Item({
 	label: "Google Maps as Starting Point",
 	contentScript: 'self.on("click", function () { self.postMessage(); });',
 	onMessage: function () {
 		OpenTabs("GM", "saddr=", selection.text);
 	}
 });
-var itmGMapsEn = mmenu.Item({
+var itmGMapsEn = cmenu.Item({
 	label: "Google Maps as End Point",
 	contentScript: 'self.on("click", function () { self.postMessage(); });',
 	onMessage: function () {
@@ -63,22 +71,26 @@ var itmBingMaps = cmenu.Item({
 		OpenTabs("BM", "where1=", selection.text);
 	}
 });
-var itmBingMapsSt = mmenu.Item({
+var itmBingMapsSt = cmenu.Item({
   label: "Bing Maps as Starting Point",
   contentScript: 'self.on("click", function () { self.postMessage(); });',
   onMessage: function () {
         OpenTabs("BM", "rtp=adr.", selection.text);
 	}
 });
-var itmBingMapsEn = mmenu.Item({
+var itmBingMapsEn = cmenu.Item({
   label: "Bing Maps as End Point",
   contentScript: 'self.on("click", function () { self.postMessage(); });',
   onMessage: function () function () {
         OpenTabs("BM", "rtp=~adr.", selection.text);
 	}
 });
+// Default Search option -------------------------------
+var itmDefault = cmenu.Item({
+   label: "Locate"
+});
 // More Options Menu (under the Main Menu) -------------
-var MenMore = mmenu.Menu({
+var MenMore = cmenu.Menu({
   label: "More",
   image: self.data.url("more-menu-16.png"),
   items: [itmGMapsSt, itmGMapsEn, itmBingMapsSt, itmBingMapsEn]
@@ -94,7 +106,7 @@ var LocateMenu = cmenu.Menu({
 				 '  return "Locate " + text;' +
 				 '});',
   image: self.data.url("mapnmore-16.png"),
-  items: [itmGMaps, itmBingMaps, MenMore]
+  items: [itmDefault, itmGMaps, itmBingMaps, MenMore]
 });
 // Main Function for Opening Tabs ----------------------
 function OpenTabs(provider, activity, address) {
